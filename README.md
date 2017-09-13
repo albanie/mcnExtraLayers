@@ -24,4 +24,5 @@ The module is easiest to install with the `vl_contrib` package manager:
 ```
 vl_contrib('install', 'mcnExtraLayers') ;
 vl_contrib('setup', 'mcnExtraLayers') ;
+vl_contrib('test', 'mcnExtraLayers') ; % optional
 ```
