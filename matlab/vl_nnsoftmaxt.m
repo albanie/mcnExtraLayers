@@ -19,8 +19,8 @@ function Y = vl_nnsoftmaxt(x, varargin)
 %
 %  This function is based on Andrea Vedaldi's vl_nnsoftmax function.
 %
-% Copyright (C) 2017 Samuel Albanie 
-% All rights reserved.
+% Copyright (C) 2017 Samuel Albanie
+% Licensed under The MIT License [see LICENSE.md for details]
 
   opts.dim = 1 ;
   [opts,dzdy] = vl_argparsepos(opts, varargin) ;

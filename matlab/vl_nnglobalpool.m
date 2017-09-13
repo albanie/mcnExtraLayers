@@ -23,10 +23,7 @@ function y = vl_nnglobalpool(x, varargin)
 %   The derivative DZDX has the same dimension as the input X.
 %
 % Copyright (C) 2016 Samuel Albanie and Andrea Vedaldi
-% All rights reserved.
-%
-% This file is part of the VLFeat library and is made available under
-% the terms of the BSD license (see the COPYING file).
+% Licensed under The MIT License [see LICENSE.md for details]
 
   opts.method = 'avg' ;
   [opts, dzdy] = vl_argparsepos(opts, varargin) ;

@@ -22,6 +22,9 @@ function y = vl_nnscalenorm(x, w, varargin)
 %   NOTES: This layer was introduced in the paper: "ParseNet: Looking Wider 
 %   To See Better". It is useful when combining activations from different 
 %   layers of the network that might possess different scales. 
+%
+% Copyright (C) 2017 Samuel Albanie
+% Licensed under The MIT License [see LICENSE.md for details]
 
   [~, dzdy] = vl_argparsepos(struct(), varargin) ;
 

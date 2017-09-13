@@ -16,6 +16,9 @@ function y = vl_nnflatten(x, axis, varargin)
 %
 %   The derivative DZDY has the same dimension of the output Y and
 %   The derivative DZDX has the same dimension as the input X.
+%
+% Copyright (C) 2017 Samuel Albanie and Andrea Vedaldi.
+% Licensed under The MIT License [see LICENSE.md for details]
 
   [~, dzdy] = vl_argparsepos(struct(), varargin) ;
 
