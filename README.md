@@ -1,7 +1,7 @@
 ## mcnExtraLayers
 
-A collection of common MatConvNet functions and DagNN layers which are shared 
-across a number of classification and object detection frameworks.
+This repo contains a collection of common MatConvNet functions and DagNN layers which are shared 
+across a number of classification and object detection frameworks.  
 
 ### Layers:
 
@@ -12,6 +12,8 @@ across a number of classification and object detection frameworks.
 * `vl_nnsoftmaxt` - softmax along a given dimension
 
 ### Utilities
+
+The module also contains some additional utilities which may be useful during network training:
 
 * [findBestCheckpoint](https://github.com/albanie/mcnExtraLayers/blob/master/utils/findBestCheckpoint.m) - 
 function to rank and prune network checkpoints saved during training (useful for saving space automatically at the end of a training run)
