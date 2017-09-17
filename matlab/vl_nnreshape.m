@@ -29,7 +29,6 @@ function y = vl_nnreshape(x, shape, varargin)
 
   [~, dzdy] = vl_argparsepos(struct(), varargin) ;
 
-
   if isnumeric(shape) % apply caffe style conventions if needed    
     shape_ = num2cell(shape) ;    
     if numel(shape_) == 2, shape_{3} = [] ; end   
