@@ -1,4 +1,4 @@
-function y = vl_nnscalenorm(x, w, varargin)
+function [y,dzdw] = vl_nnscalenorm(x, w, varargin)
 %VL_NNSCALENORM Feature normalization with scaling.
 %   Y = VL_NNSCALENORM(X, W) normalizes input features across 
 %   across channels to have an L2 norm of 1, and scales each 
@@ -43,5 +43,5 @@ function y = vl_nnscalenorm(x, w, varargin)
     dzdw_ = dzdy{1} .* normalizedFeats ;
     dzdw = sum(sum(sum(dzdw_,1), 2), 4) ;
     dzdx = vl_nnnormalize(x, normParams, multipliers .* dzdy{1}) ;
-    y = {dzdx, dzdw} ;
+    y = dzdx ;
   end
