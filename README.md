@@ -10,6 +10,7 @@ across a number of classification and object detection frameworks.
 * `vl_nnhuberloss` - computation of the Huber (L1-smooth) loss
 * `vl_nnreshape` -  tensor reshaping
 * `vl_nnsoftmaxt` - softmax along a given dimension
+* `vl_nnmax` - element-wise maximum across tensors
 
 ### Utilities
 
