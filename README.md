@@ -5,12 +5,13 @@ across a number of classification and object detection frameworks.
 
 ### Layers:
 
+* `vl_nnmax` - element-wise maximum across tensors
+* `vl_nninterp` - a wrapper for bilinear interpolation
+* `vl_nnreshape` -  tensor reshaping
 * `vl_nnflatten` - flatten along a given dimension
 * `vl_nnglobalpool` - global pooling
 * `vl_nnhuberloss` - computation of the Huber (L1-smooth) loss
-* `vl_nnreshape` -  tensor reshaping
 * `vl_nnsoftmaxt` - softmax along a given dimension
-* `vl_nnmax` - element-wise maximum across tensors
 
 ### Utilities
 
