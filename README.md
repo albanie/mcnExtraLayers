@@ -12,6 +12,7 @@ across a number of classification and object detection frameworks.
 * `vl_nnglobalpool` - global pooling
 * `vl_nnhuberloss` - computation of the Huber (L1-smooth) loss
 * `vl_nnsoftmaxt` - softmax along a given dimension
+* `vl_nncrop_wrapper` - autonn function wrapper for `vl_nncrop.m`
 
 ### Utilities
 
