@@ -16,6 +16,9 @@ function bestEpoch = findBestEpoch(expDir, varargin)
 %
 %       1. The checkpoint with the lowest validation error metric
 %       2. The last checkpoint
+%
+% Copyright (C) 2017 Samuel Albanie
+% Licensed under The MIT License [see LICENSE.md for details]
 
   opts.prune = false ;
   opts.priorityMetric = 'classError' ;
@@ -25,11 +28,13 @@ function bestEpoch = findBestEpoch(expDir, varargin)
   if ~lastEpoch, return ; end % return if no checkpoints were found
 
   bestEpoch = findBestValCheckpoint(expDir, opts.priorityMetric);
-  preciousEpochs = [bestEpoch lastEpoch];
-  removeOtherCheckpoints(expDir, preciousEpochs);
-  fprintf('----------------------- \n');
-  fprintf('%s directory cleaned: \n', expDir);
-  fprintf('----------------------- \n');
+  if opts.prune
+    preciousEpochs = [bestEpoch lastEpoch];
+    removeOtherCheckpoints(expDir, preciousEpochs);
+    fprintf('----------------------- \n');
+    fprintf('directory cleaned: %s\n', expDir);
+    fprintf('----------------------- \n');
+  end
 
 % -------------------------------------------------------------------------
 function removeOtherCheckpoints(expDir, preciousEpochs)
