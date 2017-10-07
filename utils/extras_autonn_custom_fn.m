@@ -18,12 +18,18 @@ function obj = extras_autonn_custom_fn(block, inputs, params)
       obj = Layer.create(@vl_nnmax, [{numel(inputs)}, inputs]) ;
     case 'dagnn.Crop'
       obj = vl_nncrop_wrapper(inputs{1}, inputs{2}, block.crop) ;
+    case 'dagnn.Axpy'
+      obj = Layer.create(@vl_nnaxpy, inputs(1:3)) ;
     case 'dagnn.Interp'
       obj = Layer.create(@vl_nninterp, {inputs{1}, block.shrinkFactor, ...
                         block.zoomFactor, 'padBeg', block.padBeg, ...
                         'padEnd', block.padEnd}) ;
     case 'dagnn.SoftMaxTranspose'
       obj = Layer.create(@vl_nnsoftmaxt, {inputs{1}, 'dim', block.dim}) ;
+    case 'dagnn.Scale'
+      args = {'numInputDer', 3} ; hasBias = block.hasBias ; % simplify interface
+      if hasBias, ins = inputs(1:3) ; else, ins = [inputs(1:2) {[]}] ; end
+      obj = Layer.create(@vl_nnscale, [ins {'size', block.size}], args{:}) ;
     case 'dagnn.PriorBox'
       obj = Layer.create(@vl_nnpriorbox, {inputs{1}, inputs{2}, ...
                                   'aspectRatios', block.aspectRatios, ...
@@ -42,4 +48,5 @@ function obj = extras_autonn_custom_fn(block, inputs, params)
                                  'numClasses', numClasses, ... 
                                  'nmsThresh', block.nmsThresh}, ...
                                  'numInputDer', 0) ;
+    otherwise, keyboard
   end
