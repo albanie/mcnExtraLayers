@@ -32,8 +32,8 @@ function y = vl_nninterp(x, shrink, zoom, varargin)
   % determine output size
   inSz = [size(x, 1) size(x, 2)] ;
   inSz = inSz + opts.padBeg + opts.padEnd ;
-  outSz = round((inSz - 1) / shrink) + 1 ;
-  outSz = outSz + (outSz -1) * (zoom - 1) ;
+  outSz = ((inSz - 1) / shrink) + 1 ;
+  outSz = round(outSz + (outSz -1) * (zoom - 1)) ;
 
   % generate sampling grid (should probably cache this)
   useGPU = isa(x, 'gpuArray') ;
@@ -47,7 +47,7 @@ function y = vl_nninterp(x, shrink, zoom, varargin)
   grid = repmat(grid, [1 1 1 size(x, 4)]) ;
 
  if isempty(dzdy)
-    y = vl_nnbilinearsampler(x, grid) ;
+   y = vl_nnbilinearsampler(x, grid) ;
  else
    y = vl_nnbilinearsampler(x, grid, dzdy{1}) ;
  end
