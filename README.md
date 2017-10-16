@@ -19,7 +19,9 @@ across a number of classification and object detection frameworks.
 The module also contains some additional utilities which may be useful during network training:
 
 * [findBestCheckpoint](https://github.com/albanie/mcnExtraLayers/blob/master/utils/findBestCheckpoint.m) - 
-function to rank and prune network checkpoints saved during training (useful for saving space automatically at the end of a training run)
+function to rank and prune network checkpoints saved during training (useful for saving space automatically at the end of a training run
+* [checkLearningParams](https://github.com/albanie/mcnExtraLayers/blob/master/utils/checkLearningParams.m) - 
+compare mcn network against a caffe prototxt
 
 
 ### Install
