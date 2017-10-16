@@ -1,4 +1,4 @@
-function checkLearningParams(rpn_loss, det_loss, opts)
+function checkLearningParams(mcn_outs, opts)
 %CHECKlEARNINGPARAMS compare parameters against caffe.  
 
   % Algo: we first parse the prototxt and build a set of basic "layer" 
@@ -17,11 +17,11 @@ function checkLearningParams(rpn_loss, det_loss, opts)
                    'roi-data'} ;
     if ismember(layer.type, ignoreTypes), continue ; end
     if ismember(layer.name, ignoreNames), continue ; end
-    mcnLayer = rpn_loss.find(layer.name) ;
+    mcnLayer = mcn_outs{1}.find(layer.name) ;
     if ~isempty(mcnLayer)
       mcn = mcnLayer{1} ; 
     else 
-      mcn = det_loss.find(layer.name, 1) ;
+      mcn = mcn_outs{2}.find(layer.name, 1) ;
     end
     switch layer.type
       case 'Convolution'
