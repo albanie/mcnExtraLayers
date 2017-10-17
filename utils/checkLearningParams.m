@@ -12,17 +12,22 @@ function checkLearningParams(mcn_outs, opts)
     msg = 'checking layer settings (%d/%d): %s\n' ;
     fprintf(msg, ii, numel(caffeLayers), layer.name) ;
     ignoreTypes = {'ReLU', 'Scale', 'Silence', 'Eltwise', 'Accuracy', ...
-              'BatchNorm'} ; 
+              'BatchNorm', 'ImageData'} ; 
     ignoreNames = {'input-data', 'AnchorTargetLayer', 'rpn-data', ...
-                   'roi-data'} ;
+                   'roi-data', 'Annotation'} ;
     if ismember(layer.type, ignoreTypes), continue ; end
     if ismember(layer.name, ignoreNames), continue ; end
-    mcnLayer = mcn_outs{1}.find(layer.name) ;
-    if ~isempty(mcnLayer)
-      mcn = mcnLayer{1} ; 
-    else 
-      mcn = mcn_outs{2}.find(layer.name, 1) ;
+    mcnLayerName = layer.name ;
+    found = false ;
+    if contains(layer.name, '-')
+      mcnLayerName = strrep(mcnLayerName, '-', '_') ;
+      fprintf('renaming search layer %s to %s\n', layer.name, mcnLayerName) ;
     end
+    for jj = 1:numel(mcn_outs)
+      mcnLayer = mcn_outs{jj}.find(mcnLayerName) ;
+      if ~isempty(mcnLayer), mcn = mcnLayer{1} ; found = true ; break ; end
+    end
+    assert(found, 'matching layer not found') ;
     switch layer.type
       case 'Convolution'
         checkFields = {'stride', 'pad', 'dilate', 'out', 'kernel_size', ...
@@ -127,7 +132,8 @@ function layers = parseCaffeLayers(opts)
 
   % mini parser
   stack = {} ; tokens = strsplit(proto, '\n') ; 
-  known = {'ResNet-50', 'ResNet50_BN_SCALE_Merge', 'VGG_ILSVRC_16_layers'} ;
+  known = {'ResNet-50', 'ResNet50_BN_SCALE_Merge', ...
+           'VGG_ILSVRC_16_layers', 'SEC'} ;
   msg = 'wrong proto' ; 
   assert(contains(tokens{1}, known), msg) ; tokens(1) = [] ;  
   layers = {} ; layer = struct() ;
