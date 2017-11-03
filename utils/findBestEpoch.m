@@ -51,6 +51,7 @@ function removeOtherCheckpoints(expDir, preciousEpochs)
 function bestEpoch = findBestValCheckpoint(expDir, priorityMetric)
 % -------------------------------------------------------------------------
   lastEpoch = findLastCheckpoint(expDir) ;
+  if strcmp(priorityMetric, 'last'), bestEpoch = lastEpoch ; return ; end
   % handle the different storage structures/error metrics
   data = load(fullfile(expDir, sprintf('net-epoch-%d.mat', lastEpoch)));
   if isfield(data, 'stats')
