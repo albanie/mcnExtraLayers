@@ -1,5 +1,5 @@
 function y = vl_nnslice(X, dim, slicePoint, dzdy, varargin)
-%VL_NNSLICE CNN slices a single input into multiple outputs.
+%VL_NNSLICE slices a single input tensor into multiple outputs.
 %
 %  Y = VL_NNSLICE(X, DIM, SLICEPOINT) slices the input X
 %  along dimension DIM at the points specified by SLICEPOINT, to 
@@ -10,7 +10,7 @@ function y = vl_nnslice(X, dim, slicePoint, dzdy, varargin)
 %  of the block projected onto DZDY. DZDX has the same dimensions
 %  as X, while the DZDY and Y are cell arrays with matching element 
 %  sizes. 
-% 
+%
 % Copyright (C) 2017 Samuel Albanie.
 % Licensed under The MIT License [see LICENSE.md for details]
 
