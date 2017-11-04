@@ -48,5 +48,7 @@ function obj = extras_autonn_custom_fn(block, inputs, params)
                                  'numClasses', numClasses, ... 
                                  'nmsThresh', block.nmsThresh}, ...
                                  'numInputDer', 0) ;
+    case 'SpatialSoftMax' 
+      obj = Layer.create(@vl_nnspatialsoftmax, inputs) ;
     otherwise, keyboard
   end
