@@ -6,13 +6,18 @@ across a number of classification and object detection frameworks.
 ### Layers:
 
 * `vl_nnmax` - element-wise maximum across tensors
+* `vl_nnsum` - element-wise sum across tensors
 * `vl_nninterp` - a wrapper for bilinear interpolation
+* `vl_nnslice` - slicing along a given dimension
+* `vl_nnspatialsoftmax` - spatial application of the softmax operator
 * `vl_nnreshape` -  tensor reshaping
+* `vl_nnchannelshuffle` -  channel shuffling (introduced in [ShuffleNet](https://arxiv.org/abs/1707.01083)) 
 * `vl_nnflatten` - flatten along a given dimension
 * `vl_nnglobalpool` - global pooling
 * `vl_nnhuberloss` - computation of the Huber (L1-smooth) loss
 * `vl_nnsoftmaxt` - softmax along a given dimension
 * `vl_nncrop_wrapper` - autonn function wrapper for `vl_nncrop.m`
+* `vl_nnaxpy` - vector op `y <- a*x + y` (BLAS Level One style naming convention)
 
 ### Utilities
 
