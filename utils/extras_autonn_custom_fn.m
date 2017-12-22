@@ -12,6 +12,8 @@ function obj = extras_autonn_custom_fn(block, inputs, params)
       obj = Layer.create(@permute, {inputs{1}, block.order}) ;
     case 'dagnn.Flatten'
       obj = Layer.create(@vl_nnflatten, {inputs{1}, block.axis}) ;
+    case 'dagnn.GlobalPooling'
+      obj = Layer.create(@vl_nnglobalpool, inputs(1)) ;
     case 'dagnn.Reshape'
       obj = Layer.create(@vl_nnreshape, {inputs{1}, block.shape}) ;
     case 'dagnn.Max'
@@ -45,10 +47,10 @@ function obj = extras_autonn_custom_fn(block, inputs, params)
       numClasses = double(block.numClasses) ; % fixes weird bug
       obj = Layer.create(@vl_nnmultiboxdetector, ...
                                  {inputs{1}, inputs{2}, inputs{3}...
-                                 'numClasses', numClasses, ... 
+                                 'numClasses', numClasses, ...
                                  'nmsThresh', block.nmsThresh}, ...
                                  'numInputDer', 0) ;
-    case 'SpatialSoftMax' 
+    case 'SpatialSoftMax'
       obj = Layer.create(@vl_nnspatialsoftmax, inputs) ;
     otherwise, keyboard
   end
