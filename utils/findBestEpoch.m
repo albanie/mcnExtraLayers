@@ -2,13 +2,13 @@ function bestEpoch = findBestEpoch(expDir, varargin)
 %FINDBESTEPOCH finds the best epoch of training
 %   FINDBESTEPOCH(EXPDIR) evaluates the checkpoints
 %   (the `net-epoch-%d.mat` files created during
-%   training) in EXPDIR 
+%   training) in EXPDIR
 %
 %   FINDBESTEPOCH(..., 'option', value, ...) accepts the following
 %   options:
 %
 %   `priorityMetric`:: 'classError'
-%    Determines the highest priority metric by which to rank the 
+%    Determines the highest priority metric by which to rank the
 %    checkpoints.
 %
 %   `prune`:: false
