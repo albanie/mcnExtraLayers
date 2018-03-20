@@ -29,6 +29,10 @@ function to rank and prune network checkpoints saved during training (useful for
 * [checkLearningParams](https://github.com/albanie/mcnExtraLayers/blob/master/utils/checkLearningParams.m) - 
 compare mcn network against a caffe prototxt
 
+### Loss functions
+
+Additional loss functions for regression (including euclidean, tukey biweight and huber) can be found in the [mcnRobustLoss](https://github.com/albanie/mcnRobustLoss) module.
+
 
 ### Install
 
