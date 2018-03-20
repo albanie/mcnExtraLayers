@@ -14,7 +14,8 @@ classdef Max < dagnn.ElementWise
     end
 
     function [derInputs, derParams] = backward(obj, inputs, params, derOutputs)
-      [derInputs{:}] = vl_nnmax(obj.numInputs, inputs{:}, derOutputs{1}) ;
+      derInputs = vl_nnmax(obj.numInputs, inputs{:}, derOutputs{1}) ;
+      keyboard
       derParams = {} ;
     end
 

@@ -6,7 +6,7 @@ classdef Axpy < dagnn.Filter
     end
 
     function [derInputs, derParams] = backward(self, inputs, params, derOutputs)
-      derInputs{1} = vl_nnaxpy(inputs{1}, inputs{2}, inputs{3}, derOutputs{1}) ;
+      derInputs = vl_nnaxpy(inputs{1}, inputs{2}, inputs{3}, derOutputs{1}) ;
       derParams = {} ;
     end
 

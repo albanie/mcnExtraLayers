@@ -14,8 +14,7 @@ classdef Reshape < dagnn.ElementWise
     end
 
     function [derInputs, derParams] = backward(obj, inputs, params, derOutputs)
-      derInputs{1} = vl_nnreshape(inputs{1}, obj.shape, derOutputs{1}, ...
-                                            'inputSizes', obj.inputSizes) ;
+      derInputs{1} = vl_nnreshape(inputs{1}, obj.shape, derOutputs{1}) ;
       derParams = {} ;
     end
 

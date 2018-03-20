@@ -16,9 +16,15 @@ function [y,dzdx2] = vl_nnscosinesim(x1, x2, varargin)
 %   treated as the vector elements, while the fourth dimension denotes
 %   batch indicies.
 %
+%   VL_NNCOSINELOSS(.., 'option', value, ...) accepts the following options:
+%
+%   `eps`:: 1e-6
+%    A small value to avoid possible division by zero.
+%
 % Copyright (C) 2018 Samuel Albanie.
 % Licensed under The MIT License [see LICENSE.md for details]
 
+  opts.eps = 1e-6 ;
   [~, dzdy] = vl_argparsepos(struct(), varargin) ;
 
   sz1 = size(x1) ; sz2 = size(x2) ;
@@ -30,18 +36,20 @@ function [y,dzdx2] = vl_nnscosinesim(x1, x2, varargin)
   x2_norms = sqrt(sum(x2 .* x2, 1)) ;
 
   if isempty(dzdy)
-    y = dots ./ (x1_norms .* x2_norms) ;
+    y = dots ./ max(x1_norms .* x2_norms, opts.eps) ;
     y = reshape(y, 1, 1, 1, sz1(4)) ;
   else
     dzdy = dzdy{1} ; dsize = size(dzdy) ;
     assert(numel(dsize) == 4 & all(dsize(1:3) == ones(1,3)) ...
            & dsize(4) == sz1(4), 'DZDY has an unexpected size') ;
-    t1 = bsxfun(@rdivide, x2, x1_norms .* x2_norms) ;
-    t2 = bsxfun(@rdivide, bsxfun(@times, x1, dots), x1_norms .^3 .* x2_norms) ;
+    t1 = bsxfun(@rdivide, x2, max(x1_norms .* x2_norms, opts.eps)) ;
+    t2 = bsxfun(@rdivide, bsxfun(@times, x1, dots), ...
+                              max(x1_norms .^3 .* x2_norms, opts.eps)) ;
     dzdx1 = t1 - t2 ;
 
-    t1 = bsxfun(@rdivide, x1, x2_norms .* x1_norms) ;
-    t2 = bsxfun(@rdivide, bsxfun(@times, x2, dots), x2_norms .^3 .* x1_norms) ;
+    t1 = bsxfun(@rdivide, x1, max(x2_norms .* x1_norms, opts.eps)) ;
+    t2 = bsxfun(@rdivide, bsxfun(@times, x2, dots), ...
+                              max(x2_norms .^3 .* x1_norms, opts.eps)) ;
     dzdx2 = t1 - t2 ;
 
     % reshape to match input and compute projected derivatives
