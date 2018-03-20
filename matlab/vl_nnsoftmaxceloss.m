@@ -13,9 +13,8 @@ function y = vl_nnsoftmaxceloss(x, p, varargin)
 %   VL_NNSOFTMAXCELOSS(..., 'option', value, ...) takes the following option:
 %
 %   `instanceWeights`:: 1
-%    Weights the loss contribution of each input. This can be an N x 1
-%    array that weights each input individually, or a scalar (in which
-%    case the same weight is applied to every input).
+%    Weights the loss contribution of each input. This can be a 1 x 1 x 1 x N
+%    array that weights each input individually.
 %
 % Copyright (C) 2018 Samuel Albanie
 % Licensed under The MIT License [see LICENSE.md for details]
@@ -24,7 +23,11 @@ function y = vl_nnsoftmaxceloss(x, p, varargin)
   opts.tol = 1e-5 ;
   [opts, dzdy] = vl_argparsepos(opts, varargin) ;
 
-  if isempty(opts.instanceWeights), instanceWeights = ones(size(p)) ; end
+  if isempty(opts.instanceWeights)
+    instanceWeights = ones(1, 1, 1, size(p, 4)) ;
+  else
+    instanceWeights = opts.instanceWeights ;
+  end
 
   % check valid probability targets
   normCond = all(abs(sum(p,3) - 1) < opts.tol) ;
@@ -37,9 +40,10 @@ function y = vl_nnsoftmaxceloss(x, p, varargin)
 
   if isempty(dzdy)
 		t = p .* (Xmax + log(sum(ex,3)) - x) ;
-    y = instanceWeights(:)' * t(:) ;
+    weighted = instanceWeights .* t ;
+    y = sum(weighted(:)) ;
   else
 		q = bsxfun(@rdivide, ex, sum(ex,3)) ;
-    dydx = q - p ;
+    dydx = instanceWeights .* (q - p) ;
 		y = bsxfun(@times, dzdy{1}, dydx) ;
   end
