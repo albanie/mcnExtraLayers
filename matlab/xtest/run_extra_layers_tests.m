@@ -32,7 +32,7 @@ if ~opts.single
 end
 
 % add test class to path
-suiteDir = fullfile(vl_rootnn, 'contrib', 'mcnExtraLayers/matlab/xtest/suite') ;
+suiteDir = fullfile(vl_rootnn, 'contrib', 'mcnExtraLayers/matlab/xtest/suite/dev') ;
 addpath(suiteDir) ;
 suite = matlab.unittest.TestSuite.fromFolder(suiteDir, sel) ;
 runner = matlab.unittest.TestRunner.withTextOutput('Verbosity',3);
