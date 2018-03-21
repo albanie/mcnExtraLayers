@@ -12,7 +12,6 @@ classdef SoftmaxCELoss < dagnn.Loss
     function [derInputs, derParams] = backward(obj, inputs, params, derOutputs)
       derInputs{1} = vl_nnsoftmaxceloss(inputs{1}, inputs{2}, derOutputs{1}) ;
       derInputs{2} = [] ;
-      derInputs{3} = [] ;
       derParams = {} ;
     end
 
