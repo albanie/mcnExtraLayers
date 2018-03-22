@@ -10,10 +10,26 @@ function y = vl_nnsoftmaxceloss(x, p, varargin)
 %
 %     Loss = - sum_n sum_c p_{cn} log(softmax(x_n)_c)
 %
+%   VL_NNSOFTMAXCELOSS(..., 'option', value, ...) takes the following options:
+%
+%   `tol` :: 1e-5
+%    Used as to control the tolerance of the sanity check that ensures that
+%    the target distribution P is a valid probability distribution.
+%
+%   `temperature`:: 1
+%    The temperature of the softmax function.
+%
+%   `instanceWeights`:: 1
+%    Weights the loss contribution of each input. This can be an N x 1
+%    array that weights each input individually, or a scalar (in which
+%    case the same weight is applied to every input).
+%
 % Copyright (C) 2018 Samuel Albanie
 % Licensed under The MIT License [see LICENSE.md for details]
 
   opts.tol = 1e-5 ;
+  opts.temperature = 1 ;
+  opts.instanceWeights = ones(1, 1, 1, size(x,4)) ;
   [opts, dzdy] = vl_argparsepos(opts, varargin) ;
 
   % check valid probability targets
@@ -22,14 +38,17 @@ function y = vl_nnsoftmaxceloss(x, p, varargin)
   rangeCond = all((0 <= p(:)) & (p(:) <= 1)) ;
   assert(rangeCond, 'values of p must lie between 0 and 1') ;
 
+  x = x / opts.temperature ;
   Xmax = max(x,[],3) ;
   ex = exp(bsxfun(@minus, x, Xmax)) ;
 
   if isempty(dzdy)
 		t = p .* (Xmax + log(sum(ex,3)) - x) ;
-    y = sum(t(:)) ;
+    weighted = opts.instanceWeights .* t ;
+    y = sum(weighted(:)) ;
   else
 		q = bsxfun(@rdivide, ex, sum(ex,3)) ;
-    dydx = q - p ;
-		y = bsxfun(@times, dzdy{1}, dydx) ;
+    dydx = (1 / opts.temperature) * (q - p) ;
+    weighted = opts.instanceWeights .* dydx ;
+		y = bsxfun(@times, dzdy{1}, weighted) ;
   end
