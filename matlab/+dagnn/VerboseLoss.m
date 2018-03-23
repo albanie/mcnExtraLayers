@@ -3,11 +3,8 @@ classdef VerboseLoss < dagnn.Loss
   methods
     function outputs = forward(obj, inputs, params)
       outputs{1} = vl_nnloss(inputs{1}, inputs{2}, [], 'loss', obj.loss, obj.opts{:}) ;
-      preds = squeeze(gather(inputs{1})) ;
-      labels = reshape(gather(inputs{2}), 1, []) ;
-      preds
-      labels
-      keyboard
+      %preds = squeeze(gather(inputs{1})) ;
+      %labels = reshape(gather(inputs{2}), 1, []) ;
       obj.accumulateAverage(inputs, outputs);
     end
 

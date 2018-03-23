@@ -19,6 +19,9 @@ function y = vl_nnsoftmaxceloss(x, p, varargin)
 %   `temperature`:: 1
 %    The temperature of the softmax function.
 %
+%   `logitTargets`:: false
+%    Convert p into probabilities via a softmax of the given temperature.
+%
 %   `instanceWeights`:: 1
 %    Weights the loss contribution of each input. This can be an N x 1
 %    array that weights each input individually, or a scalar (in which
@@ -30,7 +33,13 @@ function y = vl_nnsoftmaxceloss(x, p, varargin)
   opts.tol = 1e-5 ;
   opts.temperature = 1 ;
   opts.instanceWeights = ones(1, 1, 1, size(x,4)) ;
+  opts.logitTargets = false ;
   [opts, dzdy] = vl_argparsepos(opts, varargin) ;
+
+  if opts.logitTargets
+    p = vl_nnsoftmaxt(p, 'temperature', opts.temperature, 'dim', 3) ;
+  end
+
 
   % check valid probability targets
   normCond = all(abs(sum(p,3) - 1) < opts.tol) ;
