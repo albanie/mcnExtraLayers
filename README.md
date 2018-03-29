@@ -19,6 +19,7 @@ across a number of classification and object detection frameworks.
 * `vl_nncrop_wrapper` - autonn function wrapper for `vl_nncrop.m`
 * `vl_nnaxpy` - vector op `y <- a*x + y` (BLAS Level One style naming convention)
 * `vl_nnsoftmaxceloss` - soft-target cross entropy loss (operates on logits)
+* `vl_nngnorm` - group normalization (an alternative to batch norm)
 
 ### Utilities
 
