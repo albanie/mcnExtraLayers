@@ -34,37 +34,36 @@ function [y, dzdg, dzdb] = vl_nngnorm(x, g, b, varargin)
   opts.epsilon = 1e-4 ;
   [opts,dzdy] = vl_argparsepos(opts, varargin) ;
 
-  expectedSz = [1 1 size(x,3)/opts.numGroups size(x,4)] ;
+  bsize = size(x, 4) ;
+  expectedSz = [1 1 size(x,3) 1] ;
   sg = size(g) ; sb = size(b) ;
   assert(all(expectedSz(1:numel(sg)) == sg), 'GAINS have unexpected size') ;
   assert(all(expectedSz(1:numel(sb)) == sb), 'BIASES have unexpected size') ;
 
-  sz = size(x) ; % store original shape
+  szX = size(x) ; % store original shape
 
   % compute statistics per group for current minibatch and normalize
-  x = reshape(x, size(x,1), size(x,2), [], opts.numGroups, size(x,4)) ;
-  %g = reshape(x, 1, 1, [], opts.numGroups, size(x,4)) ;
-  %b = reshape(x, 1, 1, [], opts.numGroups, size(x,4)) ;
-
+  x = reshape(x, size(x,1), size(x,2), [], opts.numGroups, bsize) ;
 
   mu = groupAvg(x) ;
   sigma2 = groupAvg(bsxfun(@minus, x, mu).^ 2) ;
   sigma = sqrt(sigma2 + opts.epsilon) ;
   x_hat = bsxfun(@rdivide, bsxfun(@minus, x, mu), sigma) ;
-  res = bsxfun(@times, g, x_hat) ; % apply gain
 
   if isempty(dzdy)
-    y = bsxfun(@plus, res, b) ; % add bias
-    y = reshape(y, sz) ;
+    x_hat_ = reshape(x_hat, szX) ;
+    y = bsxfun(@times, g, x_hat_) ; % apply gain
+    y = bsxfun(@plus, y, b) ; % add bias
   else
     dzdy = dzdy{1} ;
-    dzdy = reshape(dzdy, size(x,1), size(x,2), [], opts.numGroups, size(x,4)) ;
-    dzdb = groupSum(dzdy) ;
-    dzdg = groupSum(x_hat .* dzdy) ;
+    dzdb = chanSum(dzdy) ;
+    x_hat_ = reshape(x_hat, szX) ; dzdg = chanSum(x_hat_ .* dzdy) ;
+    dzdy = reshape(dzdy, size(x,1), size(x,2), [], opts.numGroups, bsize) ;
 
-    dzdx_hat = bsxfun(@times, dzdy, g) ;
+    g_ = reshape(g, 1, 1, size(dzdy, 3), []) ;
+    dzdx_hat = bsxfun(@times, dzdy, g_) ;
     t1 = bsxfun(@minus, x, mu) ;
-    m = prod([size(x,1) size(x,2) size(x,4)]) ;
+    m = prod([size(x,1) size(x,2) size(x,3)]) ;
     dzdsigma = groupSum((-1/2) * dzdx_hat .* bsxfun(@rdivide, t1, sigma.^3)) ;
 
     dzdmu = groupSum(bsxfun(@rdivide, dzdx_hat, -sigma)) + ...
@@ -73,15 +72,20 @@ function [y, dzdg, dzdb] = vl_nngnorm(x, g, b, varargin)
     t4 = bsxfun(@rdivide, dzdx_hat, sigma) + ...
          bsxfun(@times, dzdsigma,  (2 / m) * t1) ;
     dzdx = bsxfun(@plus, t4, dzdmu * (1/m)) ;
-    y = dzdx ;
+    y = reshape(dzdx, szX) ;
   end
 
 % ----------------------------------------
 function avg = groupAvg(x)
 % ----------------------------------------
-  avg = mean(mean(mean(x, 1), 2), 4) ;
+  avg = mean(mean(mean(x, 1), 2), 3) ;
 
 % -----------------------
 function res = groupSum(x)
+% -----------------------
+  res = sum(sum(sum(x, 1), 2), 3) ;
+
+% -----------------------
+function res = chanSum(x)
 % -----------------------
   res = sum(sum(sum(x, 1), 2), 4) ;
