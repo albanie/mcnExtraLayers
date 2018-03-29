@@ -43,5 +43,18 @@ classdef nnsoftmaxceloss < nntest
                                         dzdy, dzdx, 1e-4*test.range) ;
     end
 
+    function basic_softmax_logit_targets(test)
+      x = test.randn([1 1 8 50]) ;
+      p = abs(test.rand([1 1 8 50])) ;
+      %p = bsxfun(@rdivide, p, sum(p, 3)) ;
+      y = vl_nnsoftmaxceloss(x, p, 'logitTargets', true) ;
+
+      % check derivatives with numerical approximation
+      dzdy = test.randn(size(y)) ;
+      dzdx = vl_nnsoftmaxceloss(x, p, dzdy, 'logitTargets', 1) ;
+      test.der(@(x) vl_nnsoftmaxceloss(x, p, 'logitTargets', 1), ...
+                               x, dzdy, dzdx, 1e-4*test.range) ;
+    end
+
   end
 end
