@@ -3,6 +3,7 @@ classdef ErrorStats < dagnn.Loss
   properties (Transient)
     numClasses = []
     confusion = 0
+    classDist = 0 ;
   end
 
   methods
@@ -29,7 +30,8 @@ classdef ErrorStats < dagnn.Loss
       n = obj.numAveraged ;
       m = max(n + classDist, 1e-5) ;
       classAvgs = bsxfun(@plus, n .* obj.average, classAccs) ./ m ;
-      obj.average = [mean(classAvgs) classAvgs] ;
+      obj.average = classAvgs ;
+      obj.classDist = obj.classDist + classDist ;
       obj.numAveraged = m ;
     end
 
