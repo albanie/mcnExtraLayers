@@ -1,11 +1,13 @@
-function test_mcnExtraLayers
-% --------------------------------
+function test_mcnExtraLayers(varargin)
 % run tests for ExtraLayers module
-% --------------------------------
 
-% add tests to path
-addpath(fullfile(fileparts(mfilename('fullpath')), 'matlab/xtest')) ;
-addpath(fullfile(vl_rootnn, 'matlab/xtest/suite')) ;
+  opts.dev = false ;
+  opts = vl_argparse(opts, varargin) ;
 
-% test network layers
-run_extra_layers_tests('command', 'nn') ;
+  % add tests to path
+  addpath(fullfile(fileparts(mfilename('fullpath')), 'matlab/xtest')) ;
+  addpath(fullfile(vl_rootnn, 'matlab/xtest/suite')) ;
+
+  % test network layers
+  run_extra_layers_tests('command', 'nn', 'dev', opts.dev) ;
+end

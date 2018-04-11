@@ -1,13 +1,20 @@
 classdef ErrorStats < dagnn.Loss
 
-  properties (Transient)
+  properties
     numClasses = []
+  end
+
+  properties (Transient)
     confusion = 0
     classDist = 0 ;
   end
 
   methods
     function outputs = forward(obj, inputs, params)
+      if isempty(obj.numClasses) % :( desperate times
+        obj.numClasses = 8 ; obj.average = zeros(1, 8) ;
+      end
+
       [~,predictions] = max(inputs{1}, [], 3) ;
       predictions = squeeze(gather(predictions)) ;
       labels = squeeze(gather(inputs{2})) ;

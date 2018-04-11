@@ -53,11 +53,19 @@ function bestEpoch = findBestValCheckpoint(expDir, priorityMetric)
   lastEpoch = findLastCheckpoint(expDir) ;
   if strcmp(priorityMetric, 'last'), bestEpoch = lastEpoch ; return ; end
   % handle the different storage structures/error metrics
-  data = load(fullfile(expDir, sprintf('net-epoch-%d.mat', lastEpoch)));
+  path = fullfile(expDir, sprintf('net-epoch-%d.mat', lastEpoch)) ;
+  try
+    data = load(path) ;
+  catch
+		msg = 'checkopint at %s was malformed, trying agin in 10 secs....\n' ;
+		warning(msg, path) ; pause(10) ; data = load(path) ;
+  end
   if isfield(data, 'stats')
     valStats = data.stats.val;
   elseif isfield(data, 'info')
     valStats = data.info.val;
+  elseif isfield(data, 'state')
+    valStats = data.state.stats.val ;
   else
     error('storage structure not recognised');
   end

@@ -8,6 +8,7 @@ opts.cpu = true ;
 opts.gpu = false ;
 opts.single = false ;
 opts.double = true ;
+opts.dev = false ;
 opts.command = 'nn' ;
 opts = vl_argparse(opts, varargin) ;
 
@@ -33,6 +34,9 @@ end
 
 % add test class to path
 suiteDir = fullfile(vl_rootnn, 'contrib', 'mcnExtraLayers/matlab/xtest/suite') ;
+if opts.dev
+  suiteDir = fullfile(suiteDir, 'dev') ;
+end
 addpath(suiteDir) ;
 suite = matlab.unittest.TestSuite.fromFolder(suiteDir, sel) ;
 runner = matlab.unittest.TestRunner.withTextOutput('Verbosity',3);
