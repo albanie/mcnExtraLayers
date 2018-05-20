@@ -48,6 +48,8 @@ function y = vl_nnhuberloss(x, t, varargin)
 
   if numel(opts.instanceWeights) == 1
     instanceWeights = ones(size(x)) * opts.instanceWeights ;
+  else
+    instanceWeights = opts.instanceWeights ;
   end
 
   delta = x - t ;
