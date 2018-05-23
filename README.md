@@ -22,6 +22,7 @@ This repo contains a collection of common MatConvNet functions and DagNN layers 
 * `vl_nntukeyloss` - computation of Tukey's Biweight (robust) loss
 * `vl_nnsoftmaxceloss` - soft-target cross entropy loss (operates on logits)
 * `vl_nncaffepool` - "caffe-style" pooling (applies padding before pooling kernel)
+* `vl_nnl2norm` - l2 feature normalisation
 
 ### Utilities
 
