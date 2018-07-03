@@ -4,25 +4,24 @@ classdef GlobalPooling < dagnn.Filter
   end
 
   methods
-    function outputs = forward(self, inputs, params)
-      outputs{1} = vl_nnglobalpool(inputs{1}, 'method', self.method) ;
+    function outputs = forward(obj, inputs, params) %#ok
+      outputs{1} = vl_nnglobalpool(inputs{1}, 'method', obj.method) ;
     end
 
-    function [derInputs, derParams] = backward(self, inputs, params, derOutputs)
-      derInputs{1} = vl_nnglobalpool(inputs{1}, derOutputs{1}, 'method', self.method) ;
+    function [derInputs, derParams] = backward(obj, inputs, params, derOutputs) %#ok
+      derInputs{1} = vl_nnglobalpool(inputs{1}, derOutputs{1}, 'method', obj.method) ;
       derParams = {} ;
     end
 
-    function kernelSize = getKernelSize(obj)
-      kernelSize = obj.poolSize ;
+    function outputSizes = getOutputSizes(obj, inputSizes) %#ok
+      assert(~any(isnan(inputSizes{1})), ...
+           ['Found NaNs in the input variable dimensions. Was the ' ...
+             'dagnn.print() function called with input sizes?']) ;
+      outputSizes{1}(3:4) = inputSizes{1}(3:4) ;
+      outputSizes{1}(1:2) = [1 1] ; % collapse spatial dims
     end
 
-    function outputSizes = getOutputSizes(obj, inputSizes)
-      outputSizes = getOutputSizes@dagnn.Filter(obj, inputSizes) ;
-      outputSizes{1}(3) = inputSizes{1}(3) ;
-    end
-
-    function obj = Pooling(varargin)
+    function obj = GlobalPooling(varargin)
       obj.load(varargin) ;
     end
   end
