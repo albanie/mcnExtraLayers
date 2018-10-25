@@ -19,7 +19,11 @@ classdef Reshape < dagnn.ElementWise
     end
 
     function outputSizes = getOutputSizes(obj, inputSizes)
-      outputSizes{1} = [0,0,0,0] ;
+      tmp = zeros(inputSizes{1}) ;
+      reshaped = vl_nnreshape(tmp, obj.shape) ;
+      outSz = ones(1,4) ;
+      outSz(1:numel(size(reshaped))) = size(reshaped) ;
+      outputSizes{1} = outSz ;
     end
 
     function rfs = getReceptiveFields(obj)

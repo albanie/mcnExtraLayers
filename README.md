@@ -24,6 +24,12 @@ This repo contains a collection of common MatConvNet functions and DagNN layers 
 * `vl_nncaffepool` - "caffe-style" pooling (applies padding before pooling kernel)
 * `vl_nnl2norm` - l2 feature normalisation
 
+### Dependencies
+
+mcnExtraLayers requires the following modules:
+
+* [autonn](https://github.com/vlfeat/autonn) - automatic differentiation
+
 ### Utilities
 
 The module also contains some additional utilities which may be useful during network training:
