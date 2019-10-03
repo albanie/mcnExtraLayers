@@ -1,5 +1,7 @@
 ## mcnExtraLayers
 
+*Notice: This repo is no longer actively maintained. You are very welcome to use it, but I am unable to respond to issues and provide support.*
+
 This repo contains a collection of common MatConvNet functions and DagNN layers which are shared across a number of classification and object detection frameworks.
 
 ### Layers:
